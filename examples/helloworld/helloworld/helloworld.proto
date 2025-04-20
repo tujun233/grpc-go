@@ -27,6 +27,19 @@ service Greeter {
   rpc SayHello (HelloRequest) returns (HelloReply) {}
 }
 
+message Request2 {
+  int32 data2 = 1;
+}
+
+message Response2 {
+  int32 result2 = 1;
+}
+
+// 定义第二个服务
+service Service2 {
+  rpc Method2 (Request2) returns (Response2);
+}
+
 // The request message containing the user's name.
 message HelloRequest {
   string name = 1;
