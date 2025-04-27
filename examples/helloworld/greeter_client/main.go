@@ -57,4 +57,12 @@ func main() {
 		log.Fatalf("could not greet: %v", err)
 	}
 	log.Printf("Greeting: %s", r.GetMessage())
+
+	c2 := pb.NewService2Client(conn)
+	r2, err2 := c2.Method2(ctx, &pb.Request2{Data2: 2})
+	if err2 != nil {
+		log.Fatalf("could not service2: %v", err)
+	}
+	log.Printf("Service2: %v", r2.GetResult2())
+
 }

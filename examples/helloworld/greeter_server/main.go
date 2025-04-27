@@ -38,11 +38,19 @@ var (
 type server struct {
 	pb.UnimplementedGreeterServer
 }
+type service2server struct {
+	pb.UnimplementedService2Server
+}
 
 // SayHello implements helloworld.GreeterServer
 func (s *server) SayHello(_ context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
 	log.Printf("Received: %v", in.GetName())
 	return &pb.HelloReply{Message: "Hello " + in.GetName()}, nil
+}
+
+func (s *service2server) Method2(_ context.Context, in *pb.Request2) (*pb.Response2, error) {
+	log.Printf("Received: %v", in.GetData2())
+	return &pb.Response2{Result2: in.GetData2()}, nil
 }
 
 func main() {
@@ -54,7 +62,10 @@ func main() {
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
 	log.Printf("server listening at %v", lis.Addr())
+	pb.RegisterService2Server(s, &service2server{})
+	log.Printf("service 2 server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
+	context.Background()
 }
